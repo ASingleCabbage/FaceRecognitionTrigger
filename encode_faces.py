@@ -5,10 +5,17 @@ import cv2
 import os
 
 # data_path is a folder containing folders, with each folder containing faces
-# of a person to recognize
-data_path = "D:\cv_trigger\dataset_mark"
+# of a person to recognize. The subfolder name should be the name of the person
+# the folder is for.
+#
+#   data_path ---> person1_name ---> images of person1
+#                > person2_name ---> images of person2
+#                  ...
+
+data_path = "dataset_mark"
 encoding_output = "encoding_mark"
 
+# "cnn" for more accurate but less speed, "hog" for the opposite
 detect_method = "cnn"
 
 imagePaths = list(paths.list_images(data_path))
