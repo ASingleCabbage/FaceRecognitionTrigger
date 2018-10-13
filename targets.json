@@ -1,0 +1,10 @@
+[
+    {
+        "name" : "Daniel",
+        "file" : "audio_files\\damnDaniel.wav"
+    },
+    {
+        "name" : "mark",
+        "file" : "audio_files\\OhHiMark.wav"
+    }
+]
