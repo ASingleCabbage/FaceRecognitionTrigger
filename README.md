@@ -15,3 +15,5 @@ and is recognizable by the program when shown to it.
 # Creating Your own Reference Encodings
 You can use encode_faces.py to encoded your own reference faces. The encoding step is pretty time consuming (a minute per photo). filter_encodings.py and merge_encodings.py are one-time scripts I created to merge and filter previously genereated encodings file. 
 
+# recognize_asians.py
+During the project, I discovered that face_recognition is hilariously bad with asians with the default tolerance values. It consistently cannot tell Asians apart (with reference faces of myself, Jared, and Thomas, who are all Asians). With this in mind, I made a seperate program recognize_asians.py, witch uses encoding_asians for reference faces, to recognize asians. It works surprisingly well, with almost none observed false positive and true negatives.
