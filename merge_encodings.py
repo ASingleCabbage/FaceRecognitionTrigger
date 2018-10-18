@@ -1,9 +1,17 @@
-import pickle
+import pickle, argparse
 
-file1 = "encoding_merge"
-file2 = "encoding_mark"
 
-output = "encoding_merge"
+parser = argparse.ArgumentParser(description='Merge two existing encoding files.')
+parser.add_argument("file1", help="1st encoding")
+parser.add_argument("file2", help="2nd encoding")
+parser.add_argument("output", help="name of output file")
+args = vars(parser.parse_args())
+
+file1 = args["file1"]
+file2 = args["file2"]
+output = args["output"]
+
+print("Merging {} and {} to {}".format(file1, file2, output))
 
 data1 = pickle.loads(open(file1, "rb").read())
 data2 = pickle.loads(open(file2, "rb").read())

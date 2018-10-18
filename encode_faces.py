@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser(description='Encode faces.')
 parser.add_argument("-i", "--dataset", required=True,
                     help="path to input directory of faces + images")
 parser.add_argument("-e", "--encodings", required=True,
-	                help="path to serialized db of facial encodings")
+	                help="output path to serialized db of facial encodings")
 args = vars(parser.parse_args())
 
 
