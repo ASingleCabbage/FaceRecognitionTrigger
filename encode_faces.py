@@ -2,7 +2,7 @@ from imutils import paths, resize
 import face_recognition
 import pickle
 import cv2
-import os
+import os, argparse
 
 # data_path is a folder containing folders, with each folder containing faces
 # of a person to recognize. The subfolder name should be the name of the person
@@ -12,15 +12,23 @@ import os
 #                > person2_name ---> images of person2
 #                  ...
 
-data_path = "dataset_mark"
-encoding_output = "encoding_mark"
+parser = argparse.ArgumentParser(description='Encode faces.')
+parser.add_argument("-i", "--dataset", required=True,
+                    help="path to input directory of faces + images")
+parser.add_argument("-e", "--encodings", required=True,
+	                help="path to serialized db of facial encodings")
+args = vars(parser.parse_args())
+
+
+data_path = args["dataset"]
+encoding_output = args["encodings"]
 
 # "cnn" for more accurate but less speed, "hog" for the opposite
 detect_method = "cnn"
 
 imagePaths = list(paths.list_images(data_path))
 
-print("Loaded ", len(imagePaths), " images from path:")
+print("Loaded {} images from path {}:".format(len(imagePaths), data_path))
 for path in imagePaths:
     print(path)
 

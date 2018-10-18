@@ -11,13 +11,6 @@ encodings_path = "encoding_asian"
 # had to use the faster yet less accurate "hog" instead of "cnn"
 detect_method = "hog"
 
-# targets = {}
-# with open("targets.json", "r") as f:
-# 	targets = json.load(f)
-
-# time until audio files can be played again in seconds
-# audioDelay = 5
-
 data = pickle.loads(open(encodings_path, "rb").read())
 
 knownEncodings = data[0]
@@ -26,20 +19,12 @@ encodingCounts = data[2]
 
 print("loaded encoding lists with {} entries".format(len(knownEncodings)))
 
-# porportion of matches needed to recognize face
-# matchThreshold = 0.0
-# minimum difference between best and second best matches needed to establish certainty
-# minDifference = 0.2
-
 vs = VideoStream(src=0).start()
 writer = None
 
 print("starting webcam...")
-# waits for the webcam to warm up
 time.sleep(2.0)
 
-# timeSinceAudioExec = 0
-# lastAudioTime = time.time()
 while True:
 	frame = vs.read()
 	rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -49,9 +34,6 @@ while True:
 	boxes = face_recognition.face_locations(rgb, model=detect_method)
 	encodings = face_recognition.face_encodings(rgb, boxes)
 	names = []
-
-	# if len(encodings) == 0:
-	# 	print("[INFO] No faces in frame")
 
 	for encoding in encodings:
 		matches = face_recognition.compare_faces(knownEncodings, encoding)
@@ -69,27 +51,6 @@ while True:
 
 			name = max(counts, key=lambda n: counts.get(n) / encodingCounts[n])
 			nameMatchProp = counts.pop(name) / encodingCounts[name]
-			# competitor = max(counts, key=lambda n: counts.get(n) / encodingCounts[n], default=None)
-			# compMatchProp = 0.0
-			# if competitor != None:
-			# 	compMatchProp = counts[competitor] / encodingCounts[competitor]
-
-			# print("[INFO] {}% match. Threshold is {}. {} reference encodings.".format(nameMatchProp * 100, matchThreshold, encodingCounts[name]))
-
-			# #setting unknown threshold here
-			# if nameMatchProp < matchThreshold :
-			# 	name = "unknown"
-			# elif competitor != None and (nameMatchProp - minDifference) < compMatchProp :
-			# 	print("------ too close with closest competing match {} at {}%. Reverting to unknown".format(competitor, compMatchProp * 100))
-			# 	name = "unknown"
-			# else:
-			# 	target = next((item for item in targets if item["name"] == name), None)
-			# 	if target != None and (time.time() - timeSinceAudioExec) > audioDelay :
-			# 		timeSinceAudioExec = time.time()
-			# 		wave_obj = sa.WaveObject.from_wave_file(target["file"])
-			# 		play_obj = wave_obj.play()
-		# else:
-		# 	print("[INFO] Unrecognized face")
 
 		names.append("{}% ".format(int(nameMatchProp * 100)) + name)
 	# loop over the recognized faces

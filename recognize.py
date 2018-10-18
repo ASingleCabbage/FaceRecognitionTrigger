@@ -4,19 +4,32 @@ import imutils
 import pickle
 import time
 import cv2
-import math, json
+import math, json, argparse
 import simpleaudio as sa
 
-encodings_path = "encoding_merge"
+parser = argparse.ArgumentParser(description='Recognize faces and play audio clips.')
+parser.add_argument("-e", "--encodings", required=True,
+	                help="path to serialized db of facial encodings")
+parser.add_argument("-a", "--actions", required=True,
+	                help="json file with target names and audio files to play")
+parser.add_argument("-d", "--delay", default=5,
+	                help="delay between audio playback in seconds; default is 5 seconds")
+args = vars(parser.parse_args())
+
+
+encodings_path = args["encodings"]
+
+# time until audio files can be played again in seconds
+audioDelay = args["delay"]
+
 # had to use the faster yet less accurate "hog" instead of "cnn"
 detect_method = "hog"
 
-targets = {}
-with open("targets.json", "r") as f:
-	targets = json.load(f)
+print("Using reference encoding {} and target file {} with audio delay of {} seconds".format(encodings_path, args["actions"], audioDelay))
 
-# time until audio files can be played again in seconds
-audioDelay = 5
+targets = {}
+with open(args["actions"], "r") as f:
+	targets = json.load(f)
 
 data = pickle.loads(open(encodings_path, "rb").read())
 
